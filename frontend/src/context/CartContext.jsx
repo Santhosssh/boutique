@@ -4,9 +4,39 @@ import { useNotification } from './NotificationContext';
 
 const CartContext = createContext(null);
 
+const DEFAULT_CART_ITEMS = [
+  {
+    cartItemId: 'prod-001-Free Size-Crimson Red & Gold',
+    productId: 'prod-001',
+    name: 'Royal Crimson Kanchipuram Pure Silk Saree',
+    price: 18500,
+    originalPrice: 22500,
+    image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80',
+    category: 'Sarees',
+    size: 'Free Size',
+    color: 'Crimson Red & Gold',
+    quantity: 1
+  },
+  {
+    cartItemId: 'prod-006-Standard-Deep Wine',
+    productId: 'prod-006',
+    name: 'Bespoke Zardozi & Velvet Embroidered Potli',
+    price: 3899,
+    originalPrice: 4500,
+    image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=80',
+    category: 'Accessories',
+    size: 'Standard',
+    color: 'Deep Wine',
+    quantity: 1
+  }
+];
+
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState(() => getFromStorage(STORAGE_KEYS.CART, []));
-  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [cartItems, setCartItems] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEYS.CART);
+    return saved ? JSON.parse(saved) : DEFAULT_CART_ITEMS;
+  });
+  const [appliedCoupon, setAppliedCoupon] = useState({ code: 'LAKSHMI10', discountPercent: 10 });
   const { addToast } = useNotification();
 
   useEffect(() => {

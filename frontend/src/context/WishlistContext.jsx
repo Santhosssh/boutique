@@ -3,12 +3,20 @@ import { getFromStorage, saveToStorage, STORAGE_KEYS } from '../services/api';
 import { useCart } from './CartContext';
 import { useNotification } from './NotificationContext';
 
+import { INITIAL_PRODUCTS } from '../utils/mockData';
+
 const WishlistContext = createContext(null);
 
+const DEFAULT_WISHLIST = [
+  INITIAL_PRODUCTS[1],
+  INITIAL_PRODUCTS[4]
+].filter(Boolean);
+
 export const WishlistProvider = ({ children }) => {
-  const [wishlistItems, setWishlistItems] = useState(() =>
-    getFromStorage(STORAGE_KEYS.WISHLIST, [])
-  );
+  const [wishlistItems, setWishlistItems] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEYS.WISHLIST);
+    return saved ? JSON.parse(saved) : DEFAULT_WISHLIST;
+  });
   const { addToCart } = useCart();
   const { addToast } = useNotification();
 

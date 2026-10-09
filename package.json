@@ -1,0 +1,23 @@
+{
+  "name": "sri-lakshmi-boutique-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sri Lakshmi Boutique - Luxury Haute Couture Frontend Design Suite",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "start": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview",
+    "lint": "npm --prefix frontend run lint"
+  },
+  "keywords": [
+    "boutique",
+    "frontend",
+    "luxury-fashion",
+    "ui-design",
+    "vite",
+    "react"
+  ],
+  "author": "",
+  "license": "MIT"
+}

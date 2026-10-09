@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authService } from '../services/authService';
+import { authService, DEFAULT_USER, DEFAULT_ADMIN } from '../services/authService';
 import { useNotification } from './NotificationContext';
 
 const AuthContext = createContext(null);
@@ -102,11 +102,10 @@ export const AuthProvider = ({ children }) => {
 
   // Helper quick toggle between customer and admin testing mode
   const switchRole = (newRole) => {
-    if (!user) return;
-    const switched = { ...user, role: newRole };
-    setUser(switched);
-    localStorage.setItem('sri_lakshmi_current_user', JSON.stringify(switched));
-    addToast(`Switched active role to: ${newRole.toUpperCase()}`, 'info');
+    const targetUser = newRole === 'admin' ? { ...DEFAULT_ADMIN } : { ...DEFAULT_USER };
+    setUser(targetUser);
+    localStorage.setItem('sri_lakshmi_current_user', JSON.stringify(targetUser));
+    addToast(`Switched active mode to: ${newRole === 'admin' ? 'Administrator' : 'Customer'}`, 'info');
   };
 
   const isAdmin = user?.role === 'admin';

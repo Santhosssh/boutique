@@ -1,5 +1,5 @@
-// Unified API Client & Local Mock Storage Provider
-// Seamlessly allows switching between local reactive mock storage and Django REST Framework API
+// Pure Frontend Reactive Mock Storage Provider
+// Sri Lakshmi Boutique - 100% Frontend Client (Zero Backend Dependencies)
 
 import {
   INITIAL_CATEGORIES,
@@ -21,7 +21,7 @@ const STORAGE_KEYS = {
 };
 
 // Initialize persistent local storage if empty
-export const initializeLocalStorage = () => {
+export const initializeLocalStorage = (forceReset = false) => {
   // Migrate legacy keys if present
   const legacyKeys = {
     [STORAGE_KEYS.PRODUCTS]: 'aura_boutique_products',
@@ -41,24 +41,29 @@ export const initializeLocalStorage = () => {
     }
   });
 
-  if (!localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
+  if (forceReset || !localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
     localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(INITIAL_PRODUCTS));
   }
-  if (!localStorage.getItem(STORAGE_KEYS.CATEGORIES)) {
+  if (forceReset || !localStorage.getItem(STORAGE_KEYS.CATEGORIES)) {
     localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(INITIAL_CATEGORIES));
   }
-  if (!localStorage.getItem(STORAGE_KEYS.ORDERS)) {
+  if (forceReset || !localStorage.getItem(STORAGE_KEYS.ORDERS)) {
     localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(INITIAL_ORDERS));
   }
-  if (!localStorage.getItem(STORAGE_KEYS.CUSTOMERS)) {
+  if (forceReset || !localStorage.getItem(STORAGE_KEYS.CUSTOMERS)) {
     localStorage.setItem(STORAGE_KEYS.CUSTOMERS, JSON.stringify(INITIAL_CUSTOMERS));
   }
-  if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
+  if (forceReset || !localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
     localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(INITIAL_STORE_SETTINGS));
   }
 };
 
-// Ensure storage is initialized
+// Reset all mock storage back to initial sample showroom state
+export const resetStorageToDefault = () => {
+  initializeLocalStorage(true);
+};
+
+// Ensure storage is initialized on load
 initializeLocalStorage();
 
 export const getFromStorage = (key, fallback = []) => {
@@ -81,33 +86,6 @@ export const saveToStorage = (key, value) => {
 
 export { STORAGE_KEYS };
 
-// Simulated Network Latency helper for realistic asynchronous UI feel
-export const mockDelay = (ms = 180) => new Promise((resolve) => setTimeout(resolve, ms));
+// Simulated UI transition delay for realistic feel
+export const mockDelay = (ms = 120) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-
-export const apiClient = {
-  async get(endpoint) {
-    try {
-      const res = await fetch(`${API_BASE_URL}${endpoint}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
-    } catch (err) {
-      // Fallback cleanly
-      return null;
-    }
-  },
-  async post(endpoint, data) {
-    try {
-      const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
-    } catch (err) {
-      return null;
-    }
-  }
-};

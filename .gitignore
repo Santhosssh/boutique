@@ -19,6 +19,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Archived Backend Backup
+backend_backup/
+
 # Python & Django
 __pycache__/
 *.py[cod]

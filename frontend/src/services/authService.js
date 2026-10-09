@@ -54,6 +54,8 @@ const DEFAULT_ADMIN = {
   }
 };
 
+export { DEFAULT_USER, DEFAULT_ADMIN };
+
 export const authService = {
   async getCurrentUser() {
     await mockDelay(60);

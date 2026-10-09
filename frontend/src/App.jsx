@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { NotificationProvider } from './context/NotificationContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
@@ -7,6 +7,7 @@ import { WishlistProvider } from './context/WishlistContext';
 
 import { UserLayout } from './layouts/UserLayout';
 import { AdminLayout } from './layouts/AdminLayout';
+import { DesignViewerBar } from './components/common/DesignViewerBar';
 
 // Lazy Loaded Pages for Fast Code Splitting & Performance
 const LandingPage = lazy(() =>
@@ -136,7 +137,8 @@ export function App() {
       <AuthProvider>
         <CartProvider>
           <WishlistProvider>
-            <BrowserRouter>
+            <HashRouter>
+              <DesignViewerBar />
               <Suspense fallback={<PageLoadingFallback />}>
                 <Routes>
                   {/* Customer Storefront Routes */}
@@ -181,7 +183,7 @@ export function App() {
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Suspense>
-            </BrowserRouter>
+            </HashRouter>
           </WishlistProvider>
         </CartProvider>
       </AuthProvider>
